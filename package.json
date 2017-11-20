@@ -5,6 +5,7 @@
   "main": "null",
   "scripts": {
     "test": "nyc --reporter=html --reporter=text mocha test/**/*.js",
+    "test-scrutinizer": "nyc --all --reporter=clover mocha 'test/**/*.js'",
     "start": "node src/nimserver/server.js",
     "clean": "rm -rf node_modules package-lock.json",
     "report-codecov": "nyc report --reporter=lcov > coverage.lcov && codecov"
