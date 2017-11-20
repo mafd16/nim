@@ -6,7 +6,8 @@
   "scripts": {
     "test": "nyc --reporter=html --reporter=text mocha test/**/*.js",
     "start": "node src/nimserver/server.js",
-    "clean": "rm -rf node_modules package-lock.json"
+    "clean": "rm -rf node_modules package-lock.json",
+    "report-codecov": "nyc report --reporter=lcov > coverage.lcov && codecov"
   },
   "keywords": [
     "websocket"
@@ -18,6 +19,7 @@
     "ws": "^3.3.1"
   },
   "devDependencies": {
+    "codecov": "^3.0.0",
     "mocha": "^4.0.1",
     "nyc": "^11.3.0"
   }
