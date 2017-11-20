@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>The Nim Game</title>
+<link rel="stylesheet" href="client.css">
+</head>
+
+<body>
+<div id="chatten">
+<h1>Nim</h1>
+<p>Den som tar sista stickan förlorar.</p>
+
+<form id="form1">
+
+  <p>
+    <label>Välj nickname och starta/joina spelet: </label><br>
+    <input id="nickname" type="text" autofocus required>
+    <input id="connect_url" type="hidden" value="ws://localhost:3000/" >
+    <input id="protocol" type="hidden" value="json">
+    <br>
+    <input id="start" type="button" value="Starta/Joina">
+    <!--<input id="join" type="button" value="Joina">-->
+    <input id="close" type="button" value="Lämna spelet">
+  </p>
+
+
+
+
+  <p>
+    <label>Status: </label><br>
+    <div id="output" class="output"></div>
+  </p>
+
+</form>
+
+<div id="gameplan">
+
+</div>
+
+<!--<div>
+    <ul id="userlist">
+    </ul>
+</div>-->
+
+<script src="client.js"></script>
+</div>
+</body>
+</html>

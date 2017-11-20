@@ -1,0 +1,30 @@
+
+
+
+
+#chatten {
+    max-width: 500px;
+    margin: auto;
+}
+
+
+
+
+
+.match {
+    width: 5px;
+    height: 30px;
+    background-color: black;
+    margin-left: 10px;
+    margin-top: 10px;
+    float: left;
+}
+
+.pile {
+    float: left;
+    width: 450px;
+}
+
+.takeform {
+    float: right;
+}
