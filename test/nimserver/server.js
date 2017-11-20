@@ -1,21 +1,23 @@
 /**
  * Test the nim-server
  */
-"use strict";
+/*"use strict";*/
 
 /* global describe it */
 
-var assert = require("assert");
+/*var assert = require("assert");
 //const nimserver = require("../../nimserver/server.js");
 let websocket;
 let websocket2;
 let url = "ws://localhost:3000/";
 const WebSocket = require("ws");
-
+*/
+/*
 describe("suite of unit tests", function() {
     var websocket;
     var msg;
-
+*/
+/*
     beforeEach(function(done) {
         // Setup
         websocket = new WebSocket("ws://localhost:3000/", "json");
@@ -41,7 +43,8 @@ describe("suite of unit tests", function() {
             console.log('disconnected...');
         };
     });
-
+*/
+/*
     afterEach(function(done) {
         // Cleanup
         if(websocket.readyState === WebSocket.OPEN) {
@@ -53,9 +56,9 @@ describe("suite of unit tests", function() {
         }
         done();
     });
+*/
 
-
-
+/*
     describe("This is test of test", function() {
         it("Server returns ... on msg startgame", function() {
             //websocket = new WebSocket(url, "json");
@@ -73,7 +76,7 @@ describe("suite of unit tests", function() {
             };*/
 
             //setTimeout(function () {
-            assert.equal(msg.index, 0);
+/*            assert.equal(msg.index, 0);
             assert.equal(msg.nickname, "Testname");
             assert.equal(msg.piles, 3);
             //assert.equal(msg.matches, [1, 3, 5]);
@@ -88,7 +91,7 @@ describe("suite of unit tests", function() {
             /*setTimeout(function () {
                 websocket.close(1000, "Closing in test")
             }, 3000);*/
-        });
+/*       });
 
         it("Server returns ... on msg startgame", function() {
 
@@ -107,3 +110,4 @@ describe("suite of unit tests", function() {
         });
     });
 });
+*/
