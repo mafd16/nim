@@ -28,12 +28,14 @@
      */
     function printGamePlan(piles, matches) {
         let html = "";
+
         for (var i = 0; i < piles; i++) {
             html += "<div class='pile'>";
             for (var j = 0; j < matches[i]; j++) {
                 html += "<div class='match'></div>";
             }
-            html += `<div class='takeform'><input type='number' name='takematch' min='1' max='${matches[i]}'>`;
+            html += "<div class='takeform'>";
+            html += `<input type='number' name='takematch' min='1' max='${matches[i]}'>`;
             html += "<input type='submit' value='Ta stickor'></div>";
             html += "</div>";
         }
@@ -82,14 +84,14 @@
      *
      * @return {void}
      */
-    function outputOthers(message, nickname) {
+    /*function outputOthers(message, nickname) {
         let now = new Date();
         let timestamp = now.toLocaleTimeString();
 
         output.innerHTML += `<div class="rightmessage">
         ${timestamp} ${nickname}: <br>${message}<br></div>`;
         output.scrollTop = output.scrollHeight;
-    }
+    }*/
 
 
 
@@ -146,10 +148,8 @@
                     printGamePlan(msg.piles, msg.matches);
                     break;
                 default:
-
             }
         };
-
         websocket.onclose = function() {
             console.log("The websocket is now closed.");
             console.log(websocket);

@@ -80,9 +80,10 @@ wss.on("connection", (ws/*, req*/) => {
             case "startgame":
                 if (players[players.length-1] == 0) {
                     var index = games.push(new Nim({nameOfPlayerOne: msg.nickname}))-1;
+
                     //players[-1] = 1;
                     players[players.length-1] = 1;
-                    var message = "Game started. Waiting for other player to join";
+                    message = "Game started. Waiting for other player to join";
                     var type = "gameinit";
                 } else {
                     index = games.length - 1;
@@ -103,8 +104,9 @@ wss.on("connection", (ws/*, req*/) => {
                     playerInTurn: games[index].playerInTurn,
                     message: message,
                     type: type
-                }
+                };
                 var answer = JSON.stringify(obj);
+
                 ws.send(answer); // Måste sända till alla 2 som spelar!
                 console.log(answer);
                 break;
@@ -113,7 +115,6 @@ wss.on("connection", (ws/*, req*/) => {
 
                 break;
             default:
-
         }
     });
 

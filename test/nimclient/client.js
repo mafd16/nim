@@ -3,7 +3,7 @@
  */
 //"use strict";
 
-/* global describe it */
+///* global describe it */
 
 /*var assert = require("assert");
 const client = require("../../src/nimclient/client.js");

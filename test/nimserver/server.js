@@ -3,7 +3,7 @@
  */
 /*"use strict";*/
 
-/* global describe it */
+///* global describe it */
 
 /*var assert = require("assert");
 //const nimserver = require("../../nimserver/server.js");
@@ -51,7 +51,8 @@ describe("suite of unit tests", function() {
             console.log('disconnecting...');
             websocket.close();
         } else {
-            // There will not be a connection unless you have done() in beforeEach, socket.on('connect'...)
+            // There will not be a connection unless you
+            // have done() in beforeEach, socket.on('connect'...)
             console.log('no connection to break...');
         }
         done();
@@ -70,12 +71,13 @@ describe("suite of unit tests", function() {
                     type: "startgame"
                 }));
             };*/
-            /*websocket.onmessage = function(event) {
+
+/*websocket.onmessage = function(event) {
                 msg = JSON.parse(event.data);
                 //console.log(msg);
             };*/
 
-            //setTimeout(function () {
+//setTimeout(function () {
 /*            assert.equal(msg.index, 0);
             assert.equal(msg.nickname, "Testname");
             assert.equal(msg.piles, 3);
