@@ -7,3 +7,24 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mafd16/nim/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mafd16/nim/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/mafd16/nim/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/mafd16/nim/?branch=master)
 [![Build Status](https://scrutinizer-ci.com/g/mafd16/nim/badges/build.png?b=master)](https://scrutinizer-ci.com/g/mafd16/nim/build-status/master)
+
+
+A Nim game built in JavaScript using websockets
+
+### Local development environment
+
+Install the development tools and execute the validation tools and the testsuite.
+
+```
+make install
+make test
+```
+
+### Try out the game
+
+```
+npm start
+```
+Then open the src/nimclient/client.html in your browser.
+
+You'll also find the game integrated at my [me-page](https://github.com/mafd16/ramverk2-me).
