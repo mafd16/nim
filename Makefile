@@ -195,6 +195,13 @@ tag-prepare:
 
 
 
+# target: start-docker		- Run docker with server.
+.PHONY: start-docker
+start-docker:
+	@$(call HELPTEXT,$@)
+	docker-compose run node9_alpine npm start
+
+
 # ------------------------------------------------------------------------
 #
 # JavaScript
