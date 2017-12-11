@@ -17,6 +17,7 @@
   "license": "MIT",
   "dependencies": {
     "express": "^4.16.2",
+    "nim-core": "^1.0.1",
     "ws": "^3.3.1"
   },
   "devDependencies": {

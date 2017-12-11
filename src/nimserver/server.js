@@ -18,7 +18,11 @@ const wss = new WebSocket.Server({
     handleProtocols: handleProtocols // Manage what subprotocol to use.
 });
 
-const Nim = require("../nim/Nim");
+// require the nim-core
+//const Nim = require("../nim/Nim");
+const Nim = require("nim-core");
+
+
 // This contains the games
 var games = [];
 // This is number of players per game
