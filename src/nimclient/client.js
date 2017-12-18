@@ -16,6 +16,9 @@
     let nickname    = document.getElementById("nickname");
     let gameplan    = document.getElementById("gameplan");
     //let userlist    = document.getElementById("userlist");
+    let pileZero     = document.getElementById("fromPile0");
+    let pileOne      = document.getElementById("fromPile1");
+    let pileTwo      = document.getElementById("fromPile2");
 
 
     /**
@@ -36,7 +39,7 @@
             }
             html += "<div class='takeform'>";
             html += `<input type='number' name='takematch' min='1' max='${matches[i]}'>`;
-            html += "<input type='submit' value='Ta stickor'></div>";
+            html += `<input id=fromPile${i} type='submit' value='Ta stickor'></div>`;
             html += "</div>";
         }
         gameplan.innerHTML = html;
@@ -129,6 +132,10 @@
             }));
         };
 
+
+
+
+
         // Good!
         websocket.onmessage = function(event) {
             console.log("Receiving message: " + event.data);
@@ -146,6 +153,32 @@
                     output.innerHTML += "<br>";
                     output.innerHTML += msg.playerInTurn + " picks matches!";
                     printGamePlan(msg.piles, msg.matches);
+
+                    // add event listeners for taking sticks, when both players
+                    // have joined
+                    pileZero.addEventListener("click", function() {
+                        var subtractMatches = takematch.value;
+
+                        var newMatches = [
+                            msg.matches[0] - subtractMatches,
+                            msg.matches[1],
+                            msg.matches[2]
+                        ]
+
+                        var obj = {
+                            index: msg.index,
+                            nickname: msg.playerInTurn,
+                            piles: msg.piles,
+                            matches: newMatches,
+                            playerOne: msg.playerOne,
+                            playerTwo: msg.playerTwo,
+                            playerInTurn: msg.playerInTurn,
+                            message: message,
+                            type: type
+                        };
+                        var answer = JSON.stringify(obj);
+                    });
+
                     break;
                 default:
             }

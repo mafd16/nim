@@ -15,6 +15,8 @@ A Nim game built in JavaScript using websockets
 
 Install the development tools and execute the validation tools and the testsuite.
 
+Ändra till npm install test istället!
+
 ```
 make install
 make test

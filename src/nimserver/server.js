@@ -26,7 +26,9 @@ const Nim = require("nim-core");
 // This contains the games
 var games = [];
 // This is number of players per game
-var players = [0];
+//var players = [0];
+// This is array with [numOfPlayersPerGame, userOneID: webSocket, userTwoID: webSocket]
+var players = [[]];
 
 // For checking connection alive
 function heartbeat() {
@@ -69,7 +71,17 @@ function handleProtocols(protocols /*, request */) {
 wss.on("connection", (ws/*, req*/) => {
     console.log("Connection received. Adding client.");
 
+    // Saving the players connection to the players array
+    if (players[players.length-1].length == 0) {
+        players[players.length-1][0] = ws;
+    } else if (players[players.length-1].length == 1) {
+        players[players.length-1][1] = ws;
+    }
 
+
+    console.log("  ");
+    console.log(players);
+    console.log("  ");
 
     // For checking connection alive
     ws.isAlive = true;
@@ -82,21 +94,31 @@ wss.on("connection", (ws/*, req*/) => {
 
         switch (msg.type) {
             case "startgame":
-                if (players[players.length-1] == 0) {
+                //if (players[players.length-1] == 0) {
+                if (players[players.length-1].length == 1) {
                     var index = games.push(new Nim({nameOfPlayerOne: msg.nickname}))-1;
 
-                    //players[-1] = 1;
-                    players[players.length-1] = 1;
+                    //players[players.length-1] = 1;
+                    //players[players.length-1][0] = 1;
+                    // Saving the players connection
+                    //players[players.length-1][userId] = ws;
                     message = "Game started. Waiting for other player to join";
                     var type = "gameinit";
                 } else {
                     index = games.length - 1;
-                    players[players.length-1] = 2;
+                    //players[players.length-1] = 2;
+                    //players[players.length-1][0] = 2;
+                    // Saving the players connection
+                    //players[players.length-1][userId] = ws;
                     games[index].addPlayerTwo(msg.nickname);
                     message = `Player ${msg.nickname} joined.`;
                     type = "gameOn";
-                    players.push(0);
+                    players.push([]);
                 }
+
+                console.log("  ");
+                console.log("index: " + index);
+                console.log("  ");
 
                 var obj = {
                     index: index,
@@ -111,7 +133,39 @@ wss.on("connection", (ws/*, req*/) => {
                 };
                 var answer = JSON.stringify(obj);
 
-                ws.send(answer); // Måste sända till alla 2 som spelar!
+                //ws.send(answer); // Måste sända till alla 2 som spelar!
+
+                //for (var i = 1; i < 3; i++) {
+                //    players[index][i].send(answer);
+                //}
+
+                console.log("  ");
+                console.log("players[" + index + "]: " + players[index]);
+                console.log("  ");
+
+                //var toUserWebSocket = players[index];
+                //if (toUserWebSocket) {
+                //    toUserWebSocket[0].send(answer);
+                //}
+
+                // Send to both, if both connected!
+                //if (players[index].lenght == 1) {
+                //    var toUserWebSocket = players[index];
+                //    if (toUserWebSocket) {
+                //        toUserWebSocket[0].send(answer);
+                //    }
+                //}
+
+                for (var i = 0; i < players[index].length; i++) {
+                    var toUserWebSocket = players[index][i];
+                    toUserWebSocket.send(answer);
+                }
+
+
+
+                console.log("players[index].length: " + players[index].length);
+                console.log(" ");
+
                 console.log(answer);
                 break;
 
