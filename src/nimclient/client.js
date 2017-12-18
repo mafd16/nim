@@ -9,16 +9,17 @@
     let start       = document.getElementById("start");
     //let join       = document.getElementById("join");
     let protocol    = document.getElementById("protocol");
-    let sendMessage = document.getElementById("send_message");
+    //let sendMessage = document.getElementById("send_message");
     let message     = document.getElementById("message");
     let close       = document.getElementById("close");
     let output      = document.getElementById("output");
     let nickname    = document.getElementById("nickname");
     let gameplan    = document.getElementById("gameplan");
     //let userlist    = document.getElementById("userlist");
-    let pileZero     = document.getElementById("fromPile0");
-    let pileOne      = document.getElementById("fromPile1");
-    let pileTwo      = document.getElementById("fromPile2");
+    //let pileZero     = document.getElementById("fromPile0");
+    //let pileTwo      = document.getElementById("fromPile2");
+    //let pileTwo      = document.getElementById("fromPile2");
+
 
 
     /**
@@ -37,10 +38,12 @@
             for (var j = 0; j < matches[i]; j++) {
                 html += "<div class='match'></div>";
             }
-            html += "<div class='takeform'>";
-            html += `<input type='number' name='takematch' min='1' max='${matches[i]}'>`;
-            html += `<input id=fromPile${i} type='submit' value='Ta stickor'></div>`;
-            html += "</div>";
+            if (matches[i] > 0) {
+                html += "<div class='takeform'>";
+                html += `<input id=takematch${i} type='number' name='takematch' min='1' max='${matches[i]}'>`;
+                html += `<input id=fromPile${i} type='submit' value='Ta stickor'></div>`;
+                html += "</div>";
+            }
         }
         gameplan.innerHTML = html;
     }
@@ -149,6 +152,7 @@
                     printGamePlan(msg.piles, msg.matches);
                     break;
                 case "gameOn":
+                case "playing":
                     output.innerHTML = msg.message;
                     output.innerHTML += "<br>";
                     output.innerHTML += msg.playerInTurn + " picks matches!";
@@ -156,30 +160,112 @@
 
                     // add event listeners for taking sticks, when both players
                     // have joined
-                    pileZero.addEventListener("click", function() {
-                        var subtractMatches = takematch.value;
+                    // Listener for pile One
+                    if (msg.matches[0] > 0) {
+                        let pileOne = document.getElementById("fromPile0");
+                        pileOne.addEventListener("click", function() {
+                            var takematch =document.getElementById("takematch0");
+                            var subMatches = takematch.value;
+                            var message = `${msg.playerInTurn} took ${subMatches}`;
 
-                        var newMatches = [
-                            msg.matches[0] - subtractMatches,
-                            msg.matches[1],
-                            msg.matches[2]
-                        ]
+                            if (subMatches > 1) {
+                                message += ` matches from pile one.`;
+                            } else {
+                                message += ` match from pile one.`;
+                            }
 
-                        var obj = {
-                            index: msg.index,
-                            nickname: msg.playerInTurn,
-                            piles: msg.piles,
-                            matches: newMatches,
-                            playerOne: msg.playerOne,
-                            playerTwo: msg.playerTwo,
-                            playerInTurn: msg.playerInTurn,
-                            message: message,
-                            type: type
-                        };
-                        var answer = JSON.stringify(obj);
-                    });
+                            var type = "playing";
 
+                            var obj = {
+                                index: msg.index,
+                                nickname: msg.playerInTurn,
+                                pile: 1,
+                                matches: subMatches,
+                                playerOne: msg.playerOne,
+                                playerTwo: msg.playerTwo,
+                                playerInTurn: msg.playerInTurn,
+                                message: message,
+                                type: type
+                            };
+                            var answer = JSON.stringify(obj);
+
+                            websocket.send(answer);
+                        });
+                    }
+
+                    // Listener for pile Two
+                    if (msg.matches[1] > 0) {
+                        let pileTwo = document.getElementById("fromPile1");
+                        pileTwo.addEventListener("click", function() {
+                            var takematch =document.getElementById("takematch1");
+                            var subMatches = takematch.value;
+                            var message = `${msg.playerInTurn} took ${subMatches}`;
+
+                            if (subMatches > 1) {
+                                message += ` matches from pile two.`;
+                            } else {
+                                message += ` match from pile two.`;
+                            }
+
+                            var type = "playing";
+
+                            var obj = {
+                                index: msg.index,
+                                nickname: msg.playerInTurn,
+                                pile: 2,
+                                matches: subMatches,
+                                playerOne: msg.playerOne,
+                                playerTwo: msg.playerTwo,
+                                playerInTurn: msg.playerInTurn,
+                                message: message,
+                                type: type
+                            };
+                            var answer = JSON.stringify(obj);
+
+                            websocket.send(answer);
+                        });
+                    }
+
+                    // Listener for pile Three
+                    if (msg.matches[2] > 0) {
+                        let pileThree = document.getElementById("fromPile2");
+                        pileThree.addEventListener("click", function() {
+                            var takematch =document.getElementById("takematch2");
+                            var subMatches = takematch.value;
+                            var message = `${msg.playerInTurn} took ${subMatches}`;
+
+                            if (subMatches > 1) {
+                                message += ` matches from pile three.`;
+                            } else {
+                                message += ` match from pile three.`;
+                            }
+
+                            var type = "playing";
+
+                            var obj = {
+                                index: msg.index,
+                                nickname: msg.playerInTurn,
+                                pile: 3,
+                                matches: subMatches,
+                                playerOne: msg.playerOne,
+                                playerTwo: msg.playerTwo,
+                                playerInTurn: msg.playerInTurn,
+                                message: message,
+                                type: type
+                            };
+                            var answer = JSON.stringify(obj);
+
+                            websocket.send(answer);
+                        });
+                    }
                     break;
+
+                case "winning":
+                    output.innerHTML = msg.message;
+                    output.innerHTML += "<br>";
+                    printGamePlan(msg.piles, msg.matches);
+                    break;
+
                 default:
             }
         };
@@ -199,24 +285,24 @@
     /**
      * What to do when user clicks to send a message.
      */
-    sendMessage.addEventListener("click", function(/*event*/) {
-        let messageText = message.value;
+    //sendMessage.addEventListener("click", function(/*event*/) {
+    //    let messageText = message.value;
 
-        if (!websocket || websocket.readyState === 3) {
-            console.log("The websocket is not connected to a server.");
-        } else {
-            websocket.send(JSON.stringify({
-                nickname: nickname.value,
-                message: messageText,
-                getUsers: false,
-                // Use type:message when the message is from a user
-                type: "message"
-            }));
-            console.log("Sending message: " + messageText);
-            outputMe(messageText);
-        }
-        message.value = "";
-    });
+    //    if (!websocket || websocket.readyState === 3) {
+    //        console.log("The websocket is not connected to a server.");
+    //    } else {
+    //        websocket.send(JSON.stringify({
+    //            nickname: nickname.value,
+    //            message: messageText,
+    //            getUsers: false,
+    //            // Use type:message when the message is from a user
+    //            type: "message"
+    //        }));
+    //        console.log("Sending message: " + messageText);
+    //        outputMe(messageText);
+    //    }
+    //    message.value = "";
+    //});
 
 
 

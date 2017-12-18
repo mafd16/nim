@@ -133,40 +133,84 @@ wss.on("connection", (ws/*, req*/) => {
                 };
                 var answer = JSON.stringify(obj);
 
-                //ws.send(answer); // Måste sända till alla 2 som spelar!
-
-                //for (var i = 1; i < 3; i++) {
-                //    players[index][i].send(answer);
-                //}
-
-                console.log("  ");
-                console.log("players[" + index + "]: " + players[index]);
-                console.log("  ");
-
-                //var toUserWebSocket = players[index];
-                //if (toUserWebSocket) {
-                //    toUserWebSocket[0].send(answer);
-                //}
-
-                // Send to both, if both connected!
-                //if (players[index].lenght == 1) {
-                //    var toUserWebSocket = players[index];
-                //    if (toUserWebSocket) {
-                //        toUserWebSocket[0].send(answer);
-                //    }
-                //}
+                //console.log("  ");
+                //console.log("players[" + index + "]: " + players[index]);
+                //console.log("  ");
 
                 for (var i = 0; i < players[index].length; i++) {
                     var toUserWebSocket = players[index][i];
+
                     toUserWebSocket.send(answer);
                 }
 
 
 
-                console.log("players[index].length: " + players[index].length);
+                //console.log("players[index].length: " + players[index].length);
+                //console.log(" ");
                 console.log(" ");
-
+                console.log("Answer sent from server: ");
                 console.log(answer);
+                console.log(" ");
+                break;
+
+            case "playing":
+                var index = msg.index;
+
+                // Remove matches from pile
+                console.log("pile: " + msg.pile + ". matches: " + msg.matches);
+                var removed = games[index].removeMatches(msg.pile, msg.matches);
+                console.log("Removed matches: " + removed);
+
+                var type;
+                var newMessage;
+                var winner;
+                // Check for winner
+                if (games[index].checkForWinner()) {
+                    // Avsluta spelet
+                    type = "winning";
+                    if (games[index].playerInTurn == games[index].playerOne) {
+                        winner = games[index].playerTwo;
+                    } else {
+                        winner = games[index].playerOne;
+                    }
+                    newMessage = winner + " is the winner!";
+
+                    // Spara statistik till databas!
+
+
+                } else {
+                    // Change player in turn
+                    var activePlayerMessage = games[index].changePlayer();
+                    newMessage = msg.message;// + " " + activePlayerMessage;
+                    type = "playing";
+                }
+
+
+
+                var obj = {
+                    index: msg.index,
+                    nickname: "from server",
+                    piles: games[index].piles,
+                    matches: games[index].matches,
+                    playerOne: games[index].playerOne,
+                    playerTwo: games[index].playerTwo,
+                    playerInTurn: games[index].playerInTurn,
+                    message: newMessage,
+                    type: type
+                };
+
+                var answer = JSON.stringify(obj);
+
+                for (var i = 0; i < players[index].length; i++) {
+                    var toUserWebSocket = players[index][i];
+
+                    toUserWebSocket.send(answer);
+                }
+
+                console.log(" ");
+                console.log("Answer sent from server: ");
+                console.log(answer);
+                console.log(" ");
                 break;
 
             case "någott":
