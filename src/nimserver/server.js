@@ -4,7 +4,7 @@
  */
 "use strict";
 
-const port = process.env.DBWEBB_PORT || 3000;
+const port = process.env.DBWEBB_PORT || 3001;
 const express = require("express");
 const http = require("http");
 //const url = require("url");
@@ -63,6 +63,78 @@ function handleProtocols(protocols /*, request */) {
         }
     }
     return false;
+}
+
+
+/**
+ * Save the results from the game to the database
+ *
+ * @param {Array} data The game info
+ *
+ * @return {void}
+ */
+async function saveResults(data) {
+    // Parse the data
+    var parsedData = JSON.parse(data);
+
+    // The game info
+    var winnerName = parsedData.winnerName,
+        loserName = parsedData.loserName,
+        starting  = parsedData.starting;
+
+    // MongoDB
+    var mongo = require("mongodb").MongoClient;
+    //var mongo2 = require("mongodb");
+
+    // The dsn
+    //var dsn =  process.env.DBWEBB_DSN || "mongodb://mongodb_nim:27017/nimgame";
+    var dsn =  process.env.DBWEBB_DSN || "mongodb://localhost:27017/nimgame";
+
+    try {
+        const dbcon  = await mongo.connect(dsn);
+        const db = dbcon.db('nimgame');
+        const col = await db.collection("games");
+        await col.insertOne({winner: winnerName, loser: loserName, starting: starting });
+        //const result = await col.find().toArray();
+        const col2 = await db.collection("starter");
+        const percent = await col2.find().toArray();
+        var wff = percent.wins_for_first;
+        var wfs = percent.wins_for_second;
+        var editId = percent._id;
+
+        console.log("wff: " + wff);
+        console.log("wfs: " + wfs);
+        console.log("editId: " + editId);
+
+        if (!wff && !wfs) {
+            if (winnerName == starting) {
+                wff = 1;
+            } else {
+                wfs = 1;
+            }
+        } else {
+            if (winnerName == starting) {
+                wff++;
+            } else {
+                wfs++;
+            }
+        }
+
+        //var objectId = new mongo2.ObjectID(editId);
+        //await col2.updateOne({ _id: objectId }
+        await col2.updateOne({ },
+            { $set: {wins_for_first: wff, wins_for_second: wfs } },
+            { upsert: true }
+        );
+        //await col2.insertOne({wins_for_first: wff, wins_for_second: wfs });
+
+        await dbcon.close();
+
+        //res.render('crud', { title: 'Databas', message: result });
+    } catch (err) {
+        console.log(err);
+        //res.render('crud', { title: 'Databas', data: err });
+    }
 }
 
 
@@ -164,19 +236,28 @@ wss.on("connection", (ws/*, req*/) => {
                 var type;
                 var newMessage;
                 var winner;
+                var loser;
                 // Check for winner
                 if (games[index].checkForWinner()) {
                     // Avsluta spelet
                     type = "winning";
                     if (games[index].playerInTurn == games[index].playerOne) {
                         winner = games[index].playerTwo;
+                        loser = games[index].playerOne;
                     } else {
                         winner = games[index].playerOne;
+                        loser = games[index].playerTwo;
                     }
                     newMessage = winner + " is the winner!";
 
                     // Spara statistik till databas!
-
+                    var dataObj = {
+                        "winnerName": winner,
+                        "loserName": loser,
+                        "starting": games[index].playerOne
+                    };
+                    var toDatabase = JSON.stringify(dataObj);
+                    saveResults(toDatabase);
 
                 } else {
                     // Change player in turn

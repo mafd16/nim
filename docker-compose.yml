@@ -60,3 +60,13 @@ services:
             - ./:/app/
         ports:
             - "3002:3002"
+    mongodb:
+        image: mongo
+        container_name: "mongodb_nim"
+        environment:
+            - MONGO_DATA_DIR=/data/db
+        volumes:
+            - ./data/db:/data/db
+        ports:
+            - 27017:27017
+        command: mongod
