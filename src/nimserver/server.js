@@ -95,38 +95,62 @@ async function saveResults(data) {
         const db = dbcon.db('nimgame');
         const col = await db.collection("games");
         await col.insertOne({winner: winnerName, loser: loserName, starting: starting });
-        //const result = await col.find().toArray();
-        const col2 = await db.collection("starter");
-        const percent = await col2.find().toArray();
-        var wff = percent.wins_for_first;
-        var wfs = percent.wins_for_second;
-        var editId = percent._id;
 
+/*        const col2 = await db.collection("starter");
+        const percent = await col2.find().toArray();
+
+        console.log(" ");
+        console.log("percent: " + percent);
+        console.log(" ");
+
+        if (percent) {
+            var wff = percent[0].wins_for_first;
+            var wfs = percent[0].wins_for_second;
+            var editId = percent[0]._id;
+        } else {
+            wff = 0;
+            wfs = 0;
+            //var editId = 0;
+            const newDoc = await col2.insertOne({wins_for_first: wff,
+                 wins_for_second: wfs
+             });
+             editId = newDoc.insertedId;
+        }
+
+
+        console.log(" ");
         console.log("wff: " + wff);
         console.log("wfs: " + wfs);
         console.log("editId: " + editId);
-
-        if (!wff && !wfs) {
+        console.log(" ");
+*/
+        /*if (!wff && !wfs) {
             if (winnerName == starting) {
                 wff = 1;
             } else {
                 wfs = 1;
             }
+        } else {*/
+/*        if (winnerName == starting) {
+            wff++;
         } else {
-            if (winnerName == starting) {
-                wff++;
-            } else {
-                wfs++;
-            }
+            wfs++;
         }
+*/        //}
 
+/*        console.log(" ");
+        console.log("wff: " + wff);
+        console.log("wfs: " + wfs);
+        console.log("editId: " + editId);
+        console.log(" ");
+*/
         //var objectId = new mongo2.ObjectID(editId);
         //await col2.updateOne({ _id: objectId }
-        await col2.updateOne({ },
+/*        await col2.updateOne({ _id: editId },
             { $set: {wins_for_first: wff, wins_for_second: wfs } },
             { upsert: true }
         );
-        //await col2.insertOne({wins_for_first: wff, wins_for_second: wfs });
+*/        //await col2.insertOne({wins_for_first: wff, wins_for_second: wfs });
 
         await dbcon.close();
 

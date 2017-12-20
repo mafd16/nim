@@ -1,6 +1,12 @@
+#casino {
+    max-width: 950px;
+    margin: auto;
+}
+
 #chatten {
     max-width: 500px;
-    margin: auto;
+    /*margin: auto;*/
+    float: left;
 }
 
 .match {
