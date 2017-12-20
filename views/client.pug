@@ -7,7 +7,7 @@
 </head>
 
 <body>
-<div id="casino">
+<!--<div id="casino">-->
 <div id="chatten">
 <h1>Nim</h1>
 <p>Den som tar sista stickan förlorar.</p>
@@ -35,30 +35,51 @@
 
 </form>
 
+</div>
+
 <div id="gameplan">
-
 </div>
 
-<!--<div>
-    <ul id="userlist">
-    </ul>
-</div>-->
-
-<script src="client.js"></script>
-</div>
 <div id="statistics">
-    <p>Statistik</p>
+    <h4>Statistik</h4>
     <table>
         <tr>
+            <th>Antal avslutade spel</th>
             <th>% segrar för startande</th>
             <th>% segrar för icke startande</th>
         </tr>
         <tr>
-            <td>s</td>
-            <td>s</td>
+            <!--<td>starterWins</td>
+            <td>secondWins</td>-->
+            td(class="stats")= totalWins
+            td(class="stats")= starterWins
+            td(class="stats")= secondWins
         </tr>
     </table>
+    <table class="floatleft marginleft">
+        <tr>
+            <th class="toplist">Toplist</th>
+            <th class="toplist">Wins</th>
+        </tr>
+        each val in toplist
+            tr
+                td(class="stats")= val.name
+                td(class="stats")= val.wins
+    </table>
+    <table>
+        <tr>
+            <th class="toplist">Bottomlist</th>
+            <th class="toplist">Losses</th>
+        </tr>
+        each val in bottomlist
+            tr
+                td(class="stats")= val.name
+                td(class="stats")= val.losses
+    </table>
 </div>
-</div>
+<!--</div>-->
+
+<script src="client.js"></script>
+
 </body>
 </html>

@@ -20,19 +20,28 @@ app.get('/', async (req, res) => {
         // Count percentage starters and seconds to win
         var numOfFirst = await col.count( { $where: "this.winner == this.starting" } );
         var numOfSecond = await col.count( { $where: "this.loser == this.starting" } );
+
+        // Get Toplist
+        const col2 = await db.collection("toplist");
+        var toplist = await col2.find({wins: {$gt: 0}}).limit(5).sort( { wins: -1 } ).toArray();
+        // Get Bottomlist
+        var bottomlist = await col2.find({losses: {$gt: 0}}).limit(5).sort( { losses: -1 } ).toArray();
+
+        await dbcon.close();
         var total = numOfFirst + numOfSecond;
     } catch (err) {
         console.log(err);
     }
 
-    console.log(" ");
-    console.log("numOfFirst: " + numOfFirst);
-    console.log("numOfSecond: " + numOfSecond);
-    console.log(" ");
+    var percentFirst = +(Math.round(((numOfFirst / total) * 100) + "e+2") + "e-2") + " %";
+    var percentSecond = +(Math.round(((numOfSecond / total) * 100) + "e+2") + "e-2") + " %";
 
-    res.render('client', { starterWins: numOfFirst,
-        secondWins: numOfSecond,
-        totalWins: total
+    res.render('client', {
+        starterWins: percentFirst,
+        secondWins: percentSecond,
+        totalWins: total,
+        toplist: toplist,
+        bottomlist: bottomlist
     });
 });
 
