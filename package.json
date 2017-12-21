@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "nyc --reporter=html --reporter=text mocha test/**/*.js --exit",
-    "test-scrutinizer": "nyc --all --reporter=clover mocha 'test/**/*.js'",
+    "test-scrutinizer": "nyc --all --reporter=clover mocha test/**/*.js --exit",
     "start": "node src/nimserver/server.js",
     "start-nim-server": "node src/nimserver/server.js",
     "start-nim-client": "node app.js",
