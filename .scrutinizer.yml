@@ -2,8 +2,14 @@ checks:
     javascript: true
 
 build:
+    nodes:
+        analysis:
+            environment:
+                node:
+                    version: 8.9.1
+        tests: true
     environment:
-        node: '8.9.1'
+        node: 8.9.1
     dependencies:
         #before:
             #- npm install istanbul   # or add it as part of your package.json
