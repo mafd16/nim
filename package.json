@@ -8,7 +8,7 @@
     "url": "git://github.com/mafd16/nim.git"
   },
   "scripts": {
-    "test": "nyc --reporter=html --reporter=text mocha test/**/*.js",
+    "test": "nyc --reporter=html --reporter=text mocha test/**/*.js --exit",
     "test-scrutinizer": "nyc --all --reporter=clover mocha 'test/**/*.js'",
     "start": "node src/nimserver/server.js",
     "start-nim-server": "node src/nimserver/server.js",

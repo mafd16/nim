@@ -310,4 +310,10 @@ setInterval(function ping() {
 // Startup server
 server.listen(port, () => {
     console.log(`Server is listening on ${port}`);
+    //server.close(function() { console.log('Doh :('); });
 });
+
+
+
+// Export module
+module.exports = server;
