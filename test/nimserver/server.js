@@ -85,39 +85,15 @@ describe("Suite of unit tests for nim-server", function() {
                     assert.equal(msg.message, "Game started. Waiting for other player to join");
                     assert.equal(msg.type, "gameinit");
                     //assert.equal("gameOff", "gameOn");
-                    //assert.equal("gamein", "gameinit");
+
                     console.log("FÖRSTA TESTET RUNNING!");
                     done();
                     // ... and stop.
                     console.timeEnd("test1");
                     console.time("t1-t2");
                 }
-                /*assert.equal(msg.index, 0);
-                assert.equal(msg.nickname, "Testname");
-                assert.equal(msg.piles, 3);
-                assert.equal(msg.matches[0], 1);
-                assert.equal(msg.matches[1], 3);
-                assert.equal(msg.matches[2], 5);
-                assert.equal(msg.playerOne, "Testname");
-                assert.equal(msg.playerTwo, null);
-                assert.equal(msg.playerInTurn, "Testname");
-                assert.equal(msg.message, "Game started. Waiting for other player to join");
-                assert.equal(msg.type, "gameinit");
-                //assert.equal("gamein", "gameinit");
-                console.log("FÖRSTA TESTET RUNNING!");
-                done();
-                // ... and stop.
-                console.timeEnd("test1");
-                console.time("t1-t2");*/
-                //}, 10);
-                //}, 50);
             };
 
-
-
-            // Now calculate and output the difference
-            //console.log("TIMER: " + (end - start));
-            //console.log("Call to doSomething took " + (t1 - t0) + " milliseconds.")
 
             websocket.onclose = function() {
                 console.log("The test-websocket is now closed.");
@@ -161,84 +137,24 @@ describe("Suite of unit tests for nim-server", function() {
 
                     console.log("TESTARTESTAREEEEEEEE");
 
-                    //assert.equal("gamein", "gameinit");
-                    done();
-                    console.timeEnd("test2");
-                    //console.time("t2-t3");
-                }
-                /*assert.equal(msg.index, 0);
-                assert.equal(msg.nickname, "Testname2");
-                assert.equal(msg.piles, 3);
-                assert.equal(msg.matches[0], 1);
-                assert.equal(msg.matches[1], 3);
-                assert.equal(msg.matches[2], 5);
-                assert.equal(msg.playerOne, "Testname");
-                assert.equal(msg.playerTwo, "Testname2");
-                assert.equal(msg.playerInTurn, "Testname");
-                assert.equal(msg.message, "Player Testname2 joined.");
-                assert.equal(msg.type, "gameOn");*/
-                //console.log("TESTARTESTAREEEEEEEE");
+                    // Send new message to server
+                    websocket.send(JSON.stringify({
+                        index: 0,
+                        nickname: "Testname",
+                        pile: 1,
+                        matches: 1,
+                        playerOne: "Testname",
+                        playerTwo: "Testname2",
+                        playerInTurn: "Testname",
+                        message: "Testname took 1 match from pile one.",
+                        type: "playing"
+                    }));
 
-                //assert.equal("gamein", "gameinit");
-                //done();
-                //console.timeEnd("test2");
-                //console.time("t2-t3");
-            };
 
-            websocket.onclose = function() {
-                console.log("The test-websocket is now closed.");
-            };
-        });
-    });
-
-    // -------- THIS ABOVE WORKS FINE! ---------- //
-
-/*    describe("This is third test of socket returns from server:", function() {
-
-        it("3. Returns from server", function(done) {
-            this.timeout(15000);
-
-            console.timeEnd("t2-t3");
-            console.time("test3");
-
-            websocket.onopen = function() {
-                console.log("Test-socket connected");
-*/                /*var obj = {
-                    index: 0,
-                    nickname: "Testname",
-                    pile: 1,
-                    matches: 1,
-                    playerOne: "Testname",
-                    playerTwo: "Testname2",
-                    playerInTurn: "Testname",
-                    message: "Testname took 1 match from pile one.",
-                    type: "playing"
-                };
-                var answer = JSON.stringify(obj);
-
-                websocket.send(answer);*/
-
-/*                websocket.send(JSON.stringify({
-                    index: 0,
-                    nickname: "Testname",
-                    pile: 1,
-                    matches: 1,
-                    playerOne: "Testname",
-                    playerTwo: "Testname2",
-                    playerInTurn: "Testname",
-                    message: "Testname took 1 match from pile one.",
-                    type: "playing"
-                }));
-
-                console.log("TREDJE TESTET WEBSOCKET OPEN o MSG SENT");
-            };
-
-            websocket.onmessage = async function(event) {
-*/                //console.log(event);
-/*                let msg = await JSON.parse(event.data);
-                //msg = JSON.parse(event.data);
-
-                if (msg.type == "playing") {
+                    // -----------------------------
+                    //done();
+                    //console.timeEnd("test2");
+                } else if (msg.type == "playing") {
                     assert.equal(msg.index, 0);
                     assert.equal(msg.nickname, "from server");
                     assert.equal(msg.piles, 3);
@@ -250,34 +166,22 @@ describe("Suite of unit tests for nim-server", function() {
                     assert.equal(msg.playerInTurn, "Testname2");
                     assert.equal(msg.message, "Testname took 1 match from pile one.");
                     assert.equal(msg.type, "playing");
-                    console.log("TEST AV SPEL!!");
+                    //assert.equal("gameOff", "gameOn");
 
-                    //assert.equal("gamein", "gameinit");
                     done();
-                    console.timeEnd("test3");
+                    console.timeEnd("test2");
                 }
-*/                /*assert.equal(msg.index, 0);
-                assert.equal(msg.nickname, "from server");
-                assert.equal(msg.piles, 3);
-                assert.equal(msg.matches[0], 0);
-                assert.equal(msg.matches[1], 3);
-                assert.equal(msg.matches[2], 5);
-                assert.equal(msg.playerOne, "Testname");
-                assert.equal(msg.playerTwo, "Testname2");
-                assert.equal(msg.playerInTurn, "Testname2");
-                assert.equal(msg.message, "Testname took 1 match from pile one.");
-                assert.equal(msg.type, "playing");*/
-                //console.log("TEST AV SPEL!!");
+                // add else if and receive new message
+                // move done to here!
 
-                //assert.equal("gamein", "gameinit");
-                //done();
-                //console.timeEnd("test3");
-/*            };
+            };
 
             websocket.onclose = function() {
                 console.log("The test-websocket is now closed.");
             };
         });
     });
-*/
+
+    // -------- THIS ABOVE WORKS FINE! ---------- //
+
 });
