@@ -65,42 +65,7 @@
         output.scrollTop = output.scrollHeight;
     }
 
-
-
-    /**
-     * Log output to web browser from Me.
-     *
-     * @param  {string} message to output in the browser window.
-     *
-     * @return {void}
-     */
-    function outputMe(message) {
-        let now = new Date();
-        let timestamp = now.toLocaleTimeString();
-
-        output.innerHTML += `<div class="leftmessage">${timestamp} Du: <br>${message}<br></div>`;
-        output.scrollTop = output.scrollHeight;
-    }
-
-
-    /**
-     * Log output to web browser from Others.
-     *
-     * @param  {string} message to output in the browser window.
-     *
-     * @return {void}
-     */
-    /*function outputOthers(message, nickname) {
-        let now = new Date();
-        let timestamp = now.toLocaleTimeString();
-
-        output.innerHTML += `<div class="rightmessage">
-        ${timestamp} ${nickname}: <br>${message}<br></div>`;
-        output.scrollTop = output.scrollHeight;
-    }*/
-
-
-
+    
     /**
      * Select what subprotocol to use for websocekt connection.
      *
@@ -281,28 +246,6 @@
 
 
 
-
-    /**
-     * What to do when user clicks to send a message.
-     */
-    //sendMessage.addEventListener("click", function(/*event*/) {
-    //    let messageText = message.value;
-
-    //    if (!websocket || websocket.readyState === 3) {
-    //        console.log("The websocket is not connected to a server.");
-    //    } else {
-    //        websocket.send(JSON.stringify({
-    //            nickname: nickname.value,
-    //            message: messageText,
-    //            getUsers: false,
-    //            // Use type:message when the message is from a user
-    //            type: "message"
-    //        }));
-    //        console.log("Sending message: " + messageText);
-    //        outputMe(messageText);
-    //    }
-    //    message.value = "";
-    //});
 
 
 
