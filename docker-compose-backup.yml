@@ -1,0 +1,74 @@
+version: "2"
+services:
+    node9:
+        image: "node:9"
+        user: "node"
+        working_dir: /home/node/app
+        environment:
+            - NODE_ENV=production
+            - DBWEBB_PORT=8089
+        volumes:
+            - ./:/home/node/app
+        ports:
+            - "8089:8089"
+        command: "npm start"
+    node8:
+        image: "node:8"
+        user: "node"
+        working_dir: /home/node/app
+        environment:
+            - NODE_ENV=production
+            - DBWEBB_PORT=8088
+        volumes:
+            - ./:/home/node/app
+        ports:
+            - "8088:8088"
+        command: "npm start"
+    node6:
+        image: "node:6"
+        user: "node"
+        working_dir: /home/node/app
+        environment:
+            - NODE_ENV=production
+            - DBWEBB_PORT=8086
+        volumes:
+            - ./:/home/node/app
+        ports:
+            - "8086:8086"
+        command: "npm start"
+    node9_alpine:
+        build:
+            context: .
+            dockerfile: docker/Dockerfile-node9-alpine
+        volumes:
+            - ./:/app/
+        ports:
+            - "3003:3003"
+    node8_alpine:
+        build:
+            context: .
+            dockerfile: docker/Dockerfile-node8-alpine
+        volumes:
+            - ./:/app/
+        ports:
+            - "3001:3001"
+    node6_alpine:
+        build:
+            context: .
+            dockerfile: docker/Dockerfile-node6-alpine
+        volumes:
+            - ./:/app/
+        ports:
+            - "3002:3002"
+    mongodb:
+        image: mongo
+        container_name: "mongodb_nim"
+        environment:
+            - MONGO_DATA_DIR=/data/db
+        volumes:
+            - mongodata:/data/db
+        ports:
+            - 27017:27017
+        command: mongod
+volumes:
+    mongodata:

@@ -10,10 +10,12 @@
   "scripts": {
     "test": "nyc --reporter=html --reporter=text mocha test/**/*.js --exit",
     "test-scrutinizer": "nyc --all --reporter=clover mocha test/**/*.js --exit",
-    "start": "node src/nimserver/server.js",
+    "start": "run mintty npm run start-nim-server && run mintty npm run start-nim-client && npm run start-db",
     "start-nim-server": "node src/nimserver/server.js",
     "start-nim-client": "node app.js",
     "start-db": "docker-compose up mongodb",
+    "start-docker": "docker-compose up",
+    "stop-docker": "docker stop mongodb_nim nim_node9-server_1",
     "clean": "rm -rf node_modules package-lock.json",
     "kill": "taskkill /f /im node.exe",
     "report-codecov": "nyc report --reporter=lcov > coverage.lcov && codecov",
