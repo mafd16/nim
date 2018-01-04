@@ -1,5 +1,8 @@
 const express = require('express')
 const app = express()
+const port = process.env.DBWEBB_PORT_CLI || 3000;
+const server_port = process.env.DBWEBB_PORT || 3001;
+const ws_addr = "ws://localhost:" + server_port + "/";
 
 app.set('views', './views')
 app.set('view engine', 'pug')
@@ -41,8 +44,10 @@ app.get('/', async (req, res) => {
         secondWins: percentSecond,
         totalWins: total,
         toplist: toplist,
-        bottomlist: bottomlist
+        bottomlist: bottomlist,
+        ws_addr: ws_addr
     });
 });
 
-app.listen(3000, () => console.log('Nim app listening on port 3000!'))
+//app.listen(3000, () => console.log('Nim app listening on port 3000!'))
+app.listen(port, () => console.log(`Nim app listening on port ${port}!`))

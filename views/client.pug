@@ -17,7 +17,12 @@
   <p>
     <label>Välj nickname och starta/joina spelet: </label><br>
     <input id="nickname" type="text" autofocus required>
-    <input id="connect_url" type="hidden" value="ws://localhost:3001/" >
+    input(
+        id="connect_url"
+        type="hidden"
+        value= ws_addr
+    )
+
     <input id="protocol" type="hidden" value="json">
     <br>
     <input id="start" type="button" value="Starta/Joina">

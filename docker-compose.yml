@@ -1,6 +1,7 @@
 version: "2"
 services:
     node9-server:
+        container_name: "nim_server"
         build:
             context: .
             dockerfile: Dockerfile
@@ -9,8 +10,7 @@ services:
         environment:
             - NODE_ENV=production
             - DBWEBB_PORT=3001
-            - DBWEBB_DSN=mongodb://mongodb_redovisa:27017/vehicles
-            - DEBUG=redovisa:*
+            - DBWEBB_DSN=mongodb://mongodb_nim:27017/nimgame
         volumes:
             - ./:/app
         ports:
@@ -18,6 +18,26 @@ services:
         links:
             - mongodb
         command: "npm run start-nim-server"
+
+    node9-client:
+        container_name: "nim_client"
+        build:
+            context: .
+            dockerfile: Dockerfile
+        user: "node"
+        working_dir: /app
+        environment:
+            - NODE_ENV=production
+            - DBWEBB_PORT=3001
+            - DBWEBB_PORT_CLI=3000
+            - DBWEBB_DSN=mongodb://mongodb_nim:27017/nimgame
+        volumes:
+            - ./:/app
+        ports:
+            - "3000:3000"
+        links:
+            - mongodb
+        command: "npm run start-nim-client"
 
     mongodb:
         image: mongo
