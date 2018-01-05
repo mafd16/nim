@@ -193,7 +193,10 @@ wss.on("connection", (ws/*, req*/) => {
                 for (var i = 0; i < players[index].length; i++) {
                     var toUserWebSocket = players[index][i];
 
-                    toUserWebSocket.send(answer);
+                    if (toUserWebSocket.readyState === 1) {
+                        toUserWebSocket.send(answer);
+                    }
+
                 }
 
 
@@ -266,7 +269,9 @@ wss.on("connection", (ws/*, req*/) => {
                 for (var i = 0; i < players[index].length; i++) {
                     var toUserWebSocket = players[index][i];
 
-                    toUserWebSocket.send(answer);
+                    if (toUserWebSocket.readyState === 1) {
+                        toUserWebSocket.send(answer);
+                    }
                 }
 
                 console.log(" ");
@@ -275,7 +280,36 @@ wss.on("connection", (ws/*, req*/) => {
                 console.log(" ");
                 break;
 
-            case "någott":
+            case "info":
+                newMessage = msg.nickname + msg.message;
+                var index = msg.index;
+
+                var obj = {
+                    index: index,
+                    nickname: "from server",
+                    piles: games[index].piles,
+                    matches: games[index].matches,
+                    playerOne: games[index].playerOne,
+                    playerTwo: games[index].playerTwo,
+                    playerInTurn: msg.nickname,
+                    message: newMessage,
+                    type: "info"
+                };
+
+                var answer = JSON.stringify(obj);
+
+                for (var i = 0; i < players[index].length; i++) {
+                    var toUserWebSocket = players[index][i];
+
+                    if (toUserWebSocket.readyState === 1) {
+                        toUserWebSocket.send(answer);
+                    }
+                }
+
+                console.log(" ");
+                console.log("Answer sent from server: ");
+                console.log(answer);
+                console.log(" ");
 
                 break;
             default:

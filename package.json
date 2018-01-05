@@ -20,7 +20,8 @@
     "clean": "rm -rf node_modules package-lock.json",
     "kill": "taskkill /f /im node.exe",
     "report-codecov": "nyc report --reporter=lcov > coverage.lcov && codecov",
-    "start-all": "npm run start-db && npm run start-nim-server"
+    "start-all": "npm run start-db && npm run start-nim-server",
+    "test-eslint": "make eslint"
   },
   "keywords": [
     "websocket"

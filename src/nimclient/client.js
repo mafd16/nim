@@ -7,19 +7,13 @@
     let websocket;
     let url         = document.getElementById("connect_url");
     let start       = document.getElementById("start");
-    //let join       = document.getElementById("join");
     let protocol    = document.getElementById("protocol");
-    //let sendMessage = document.getElementById("send_message");
     let message     = document.getElementById("message");
     let close       = document.getElementById("close");
     let output      = document.getElementById("output");
     let nickname    = document.getElementById("nickname");
     let gameplan    = document.getElementById("gameplan");
-    //let userlist    = document.getElementById("userlist");
-    //let pileZero     = document.getElementById("fromPile0");
-    //let pileTwo      = document.getElementById("fromPile2");
-    //let pileTwo      = document.getElementById("fromPile2");
-
+    let game;
 
 
     /**
@@ -27,10 +21,11 @@
      *
      * @param  {int}    piles The number of piles.
      * @param  {array}  matches The number of matches per pile.
+     * @param  {true}   disabled True if buttons disabled, false otherwise.
      *
      * @return {void}
      */
-    function printGamePlan(piles, matches) {
+    function printGamePlan(piles, matches, disabled) {
         let html = "";
 
         for (var i = 0; i < piles; i++) {
@@ -39,33 +34,23 @@
                 html += "<div class='match'></div>";
             }
             if (matches[i] > 0) {
-                html += "<div class='takeform'>";
-                html += `<input id=takematch${i} type='number' name='takematch' min='1' max='${matches[i]}'>`;
-                html += `<input id=fromPile${i} type='submit' value='Ta stickor'></div>`;
-                html += "</div>";
+                if (disabled) {
+                    html += "<div class='takeform'>";
+                    html += `<input id=takematch${i} type='number' name='takematch' min='1' max='${matches[i]}'>`;
+                    html += `<input id=fromPile${i} type='submit' value='Ta stickor' disabled></div>`;
+                    html += "</div>";
+                } else {
+                    html += "<div class='takeform'>";
+                    html += `<input id=takematch${i} type='number' name='takematch' min='1' max='${matches[i]}'>`;
+                    html += `<input id=fromPile${i} type='submit' value='Ta stickor'></div>`;
+                    html += "</div>";
+                }
             }
         }
         gameplan.innerHTML = html;
     }
 
 
-
-    /**
-     * Log output to web browser.
-     *
-     * @param  {string} message to output in the browser window.
-     *
-     * @return {void}
-     */
-    function outputLog(message) {
-        let now = new Date();
-        let timestamp = now.toLocaleTimeString();
-
-        output.innerHTML += `${timestamp} ${message}<br>`;
-        output.scrollTop = output.scrollHeight;
-    }
-
-    
     /**
      * Select what subprotocol to use for websocekt connection.
      *
@@ -76,12 +61,10 @@
     }
 
 
-
     /**
      * What to do when user starts a game
      */
     start.addEventListener("click", function(/*event*/) {
-        //console.log("Connecting to: " + url.value);
         if (!protocol.value) {
             websocket = new WebSocket(url.value);
         } else {
@@ -92,16 +75,11 @@
         websocket.onopen = function() {
             console.log("The websocket is now open using '" + websocket.protocol + "'.");
             console.log(websocket);
-            //outputLog("The websocket is now open using '" + websocket.protocol + "'.");
-            //outputLog("Du anslöt till chatten med nickname: " + nickname.value);
             websocket.send(JSON.stringify({
                 nickname: nickname.value,
                 type: "startgame"
             }));
         };
-
-
-
 
 
         // Good!
@@ -110,19 +88,39 @@
             console.log(event);
             console.log(websocket);
             let msg = JSON.parse(event.data);
+            var disabled;
 
             switch (msg.type) {
                 case "gameinit":
                     output.innerHTML = msg.message;
-                    printGamePlan(msg.piles, msg.matches);
+
+                    if (nickname.value !== msg.playerInTurn) {
+                        // disable buttons
+                        disabled = true;
+                    } else {
+                        // Enable buttons
+                        disabled = false;
+                    }
+                    printGamePlan(msg.piles, msg.matches, disabled);
+                    game = msg.index;
+
                     break;
                 case "gameOn":
                 case "playing":
                     output.innerHTML = msg.message;
                     output.innerHTML += "<br>";
                     output.innerHTML += msg.playerInTurn + " picks matches!";
-                    printGamePlan(msg.piles, msg.matches);
 
+                    if (nickname.value !== msg.playerInTurn) {
+                        // disable buttons
+                        disabled = true;
+                    } else {
+                        // Enable buttons
+                        disabled = false;
+                    }
+
+                    printGamePlan(msg.piles, msg.matches, disabled);
+                    game = msg.index;
                     // add event listeners for taking sticks, when both players
                     // have joined
                     // Listener for pile One
@@ -228,8 +226,32 @@
                 case "winning":
                     output.innerHTML = msg.message;
                     output.innerHTML += "<br>";
-                    printGamePlan(msg.piles, msg.matches);
+
+                    if (nickname.value !== msg.playerInTurn) {
+                        // disable buttons
+                        disabled = true;
+                    } else {
+                        // Enable buttons
+                        disabled = false;
+                    }
+                    printGamePlan(msg.piles, msg.matches, disabled);
                     break;
+
+                case "info":
+                    output.innerHTML = msg.message;
+                    output.innerHTML += "<br>";
+                    //output.innerHTML += "Spelet avbrutet!";
+
+                    if (nickname.value !== msg.playerInTurn) {
+                        // disable buttons
+                        disabled = true;
+                    } else {
+                        // Enable buttons
+                        disabled = false;
+                    }
+
+                    printGamePlan(msg.piles, msg.matches, disabled);
+                    game = msg.index;
 
                 default:
             }
@@ -237,16 +259,10 @@
         websocket.onclose = function() {
             console.log("The websocket is now closed.");
             console.log(websocket);
-            outputLog("Du har nu lämnat spelet.");
+            output.innerHTML = "Du har nu lämnat spelet.";
+            output.innerHTML += "<br>";
         };
     }, false);
-
-
-
-
-
-
-
 
 
     /**
@@ -255,11 +271,9 @@
     close.addEventListener("click", function(/*event*/) {
         console.log("Closing websocket.");
         websocket.send(JSON.stringify({
+            index: game,
             nickname: nickname.value,
-            message: " har lämnat chatten.",
-            getUsers: true,
-            // Use type:info when it is informational messages, e.g.
-            // someone has entered
+            message: " har lämnat spelet.",
             type: "info"
         }));
         websocket.close();
