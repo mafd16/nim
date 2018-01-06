@@ -6,8 +6,6 @@
 #chatten {
     width: 350px;
     height: 275px;
-    /*margin: auto;*/
-    /*display: inline-block;*/
     border: 2px solid black;
     float: left;
     margin: 5px;
@@ -19,7 +17,6 @@
 }
 
 #gameplan {
-    /*display: inline-block;*/
     width: 350px;
     height: 275px;
     border: 2px solid black;
@@ -47,7 +44,6 @@
 }
 
 #statistics {
-    /*display: inline-block;*/
     width: 350px;
     height: 275px;
     border: 2px solid black;

@@ -290,7 +290,7 @@ jscs:
 .PHONY: eslint
 eslint:
 	@$(call HELPTEXT,$@)
-	[ ! -f .eslintrc.json ] || $(ESLINT) . --ignore-path .gitignore
+	[ ! -f .eslintrc.json ] || $(ESLINT) . --ignore-path .eslintignore
 
 
 

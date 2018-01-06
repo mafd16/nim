@@ -8,7 +8,7 @@
     let url         = document.getElementById("connect_url");
     let start       = document.getElementById("start");
     let protocol    = document.getElementById("protocol");
-    let message     = document.getElementById("message");
+    //let message     = document.getElementById("message");
     let close       = document.getElementById("close");
     let output      = document.getElementById("output");
     let nickname    = document.getElementById("nickname");
@@ -36,12 +36,15 @@
             if (matches[i] > 0) {
                 if (disabled) {
                     html += "<div class='takeform'>";
-                    html += `<input id=takematch${i} type='number' name='takematch' min='1' max='${matches[i]}'>`;
-                    html += `<input id=fromPile${i} type='submit' value='Ta stickor' disabled></div>`;
+                    html += `<input id=takematch${i} type='number' name='takematch' `;
+                    html += `min='1' max='${matches[i]}'>`;
+                    html += `<input id=fromPile${i} type='submit' `;
+                    html += `value='Ta stickor' disabled></div>`;
                     html += "</div>";
                 } else {
                     html += "<div class='takeform'>";
-                    html += `<input id=takematch${i} type='number' name='takematch' min='1' max='${matches[i]}'>`;
+                    html += `<input id=takematch${i} type='number' name='takematch' `;
+                    html += `min='1' max='${matches[i]}'>`;
                     html += `<input id=fromPile${i} type='submit' value='Ta stickor'></div>`;
                     html += "</div>";
                 }
@@ -126,6 +129,7 @@
                     // Listener for pile One
                     if (msg.matches[0] > 0) {
                         let pileOne = document.getElementById("fromPile0");
+
                         pileOne.addEventListener("click", function() {
                             var takematch =document.getElementById("takematch0");
                             var subMatches = takematch.value;
@@ -159,6 +163,7 @@
                     // Listener for pile Two
                     if (msg.matches[1] > 0) {
                         let pileTwo = document.getElementById("fromPile1");
+
                         pileTwo.addEventListener("click", function() {
                             var takematch =document.getElementById("takematch1");
                             var subMatches = takematch.value;
@@ -192,6 +197,7 @@
                     // Listener for pile Three
                     if (msg.matches[2] > 0) {
                         let pileThree = document.getElementById("fromPile2");
+
                         pileThree.addEventListener("click", function() {
                             var takematch =document.getElementById("takematch2");
                             var subMatches = takematch.value;
@@ -252,8 +258,10 @@
 
                     printGamePlan(msg.piles, msg.matches, disabled);
                     game = msg.index;
+                    break;
 
                 default:
+                    console.log("This should never happen!");
             }
         };
         websocket.onclose = function() {

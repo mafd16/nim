@@ -1,0 +1,26 @@
+version: "2"
+services:
+    node9_alpine:
+        build:
+            context: .
+            dockerfile: docker/Dockerfile-node9-alpine
+        volumes:
+            - ./:/app/
+        ports:
+            - "3003:3003"
+    node8_alpine:
+        build:
+            context: .
+            dockerfile: docker/Dockerfile-node8-alpine
+        volumes:
+            - ./:/app/
+        ports:
+            - "3004:3004"
+    node6_alpine:
+        build:
+            context: .
+            dockerfile: docker/Dockerfile-node6-alpine
+        volumes:
+            - ./:/app/
+        ports:
+            - "3005:3005"

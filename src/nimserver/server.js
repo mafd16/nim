@@ -94,10 +94,12 @@ async function saveResults(data) {
         const dbcon  = await mongo.connect(dsn);
         const db = dbcon.db('nimgame');
         const col = await db.collection("games");
+
         // Insert match result
         await col.insertOne({winner: winnerName, loser: loserName, starting: starting });
         // Insert top- and bottomlist statistics
         const col2 = await db.collection("toplist");
+
         await col2.updateOne(
             { "name": winnerName },
             { $inc: { "wins": 1 } },
@@ -196,10 +198,7 @@ wss.on("connection", (ws/*, req*/) => {
                     if (toUserWebSocket.readyState === 1) {
                         toUserWebSocket.send(answer);
                     }
-
                 }
-
-
 
                 //console.log("players[index].length: " + players[index].length);
                 //console.log(" ");
@@ -210,17 +209,19 @@ wss.on("connection", (ws/*, req*/) => {
                 break;
 
             case "playing":
-                var index = msg.index;
+                index = msg.index;
 
                 // Remove matches from pile
                 console.log("pile: " + msg.pile + ". matches: " + msg.matches);
                 var removed = games[index].removeMatches(msg.pile, msg.matches);
+
                 console.log("Removed matches: " + removed);
 
-                var type;
+                //var type;
                 var newMessage;
                 var winner;
                 var loser;
+
                 // Check for winner
                 if (games[index].checkForWinner()) {
                     // Avsluta spelet
@@ -241,18 +242,17 @@ wss.on("connection", (ws/*, req*/) => {
                         "starting": games[index].playerOne
                     };
                     var toDatabase = JSON.stringify(dataObj);
-                    saveResults(toDatabase);
 
+                    saveResults(toDatabase);
                 } else {
                     // Change player in turn
-                    var activePlayerMessage = games[index].changePlayer();
+                    //var activePlayerMessage = games[index].changePlayer();
+                    games[index].changePlayer();
                     newMessage = msg.message;// + " " + activePlayerMessage;
                     type = "playing";
                 }
 
-
-
-                var obj = {
+                obj = {
                     index: msg.index,
                     nickname: "from server",
                     piles: games[index].piles,
@@ -264,10 +264,10 @@ wss.on("connection", (ws/*, req*/) => {
                     type: type
                 };
 
-                var answer = JSON.stringify(obj);
+                answer = JSON.stringify(obj);
 
-                for (var i = 0; i < players[index].length; i++) {
-                    var toUserWebSocket = players[index][i];
+                for (i = 0; i < players[index].length; i++) {
+                    toUserWebSocket = players[index][i];
 
                     if (toUserWebSocket.readyState === 1) {
                         toUserWebSocket.send(answer);
@@ -282,9 +282,9 @@ wss.on("connection", (ws/*, req*/) => {
 
             case "info":
                 newMessage = msg.nickname + msg.message;
-                var index = msg.index;
+                index = msg.index;
 
-                var obj = {
+                obj = {
                     index: index,
                     nickname: "from server",
                     piles: games[index].piles,
@@ -296,10 +296,10 @@ wss.on("connection", (ws/*, req*/) => {
                     type: "info"
                 };
 
-                var answer = JSON.stringify(obj);
+                answer = JSON.stringify(obj);
 
-                for (var i = 0; i < players[index].length; i++) {
-                    var toUserWebSocket = players[index][i];
+                for (i = 0; i < players[index].length; i++) {
+                    toUserWebSocket = players[index][i];
 
                     if (toUserWebSocket.readyState === 1) {
                         toUserWebSocket.send(answer);

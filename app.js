@@ -1,13 +1,13 @@
-const express = require('express')
-const app = express()
+const express = require('express');
+const app = express();
 const port = process.env.DBWEBB_PORT_CLI || 3000;
-const server_port = process.env.DBWEBB_PORT || 3001;
-const ws_addr = "ws://localhost:" + server_port + "/";
+const serverPort = process.env.DBWEBB_PORT || 3001;
+const wsAddr = "ws://localhost:" + serverPort + "/";
 
-app.set('views', './views')
-app.set('view engine', 'pug')
+app.set('views', './views');
+app.set('view engine', 'pug');
 
-app.use(express.static('src/nimclient'))
+app.use(express.static('src/nimclient'));
 
 app.get('/', async (req, res) => {
     // Get the statistics from db and send it to the view
@@ -15,6 +15,7 @@ app.get('/', async (req, res) => {
     var mongo = require("mongodb").MongoClient;
     // The dsn
     var dsn =  process.env.DBWEBB_DSN || "mongodb://localhost:27017/nimgame";
+
     try {
         // Connect
         const dbcon  = await mongo.connect(dsn);
@@ -28,7 +29,7 @@ app.get('/', async (req, res) => {
         const col2 = await db.collection("toplist");
         var toplist = await col2.find({wins: {$gt: 0}}).limit(5).sort( { wins: -1 } ).toArray();
         // Get Bottomlist
-        var bottomlist = await col2.find({losses: {$gt: 0}}).limit(5).sort( { losses: -1 } ).toArray();
+        var bl = await col2.find({losses: {$gt: 0}}).limit(5).sort( { losses: -1 } ).toArray();
 
         await dbcon.close();
         var total = numOfFirst + numOfSecond;
@@ -44,12 +45,12 @@ app.get('/', async (req, res) => {
         secondWins: percentSecond,
         totalWins: total,
         toplist: toplist,
-        bottomlist: bottomlist,
-        ws_addr: ws_addr
+        bottomlist: bl,
+        ws_addr: wsAddr
     });
 });
 
 //app.listen(3000, () => console.log('Nim app listening on port 3000!'))
-app.listen(port, () => console.log(`Nim app listening on port ${port}!`))
+app.listen(port, () => console.log(`Nim app listening on port ${port}!`));
 
 module.exports = app;
