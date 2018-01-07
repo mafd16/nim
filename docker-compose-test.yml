@@ -1,26 +1,38 @@
 version: "2"
 services:
-    node9_alpine:
+    node8:
+        container_name: "nim_test0"
         build:
             context: .
-            dockerfile: docker/Dockerfile-node9-alpine
+            dockerfile: docker/Dockerfile-node8
+        environment:
+            - NODE_ENV=production
         volumes:
             - ./:/app/
         ports:
             - "3003:3003"
-    node8_alpine:
+        command: "npm test"
+    node8-alpine:
+        container_name: "nim_test1"
         build:
             context: .
             dockerfile: docker/Dockerfile-node8-alpine
+        environment:
+            - NODE_ENV=production
         volumes:
             - ./:/app/
         ports:
-            - "3004:3004"
-    node6_alpine:
+            - "3001:3001"
+        command: "npm test"
+    node8.9:
+        container_name: "nim_test2"
         build:
             context: .
-            dockerfile: docker/Dockerfile-node6-alpine
+            dockerfile: docker/Dockerfile-node8.9
+        environment:
+            - NODE_ENV=production
         volumes:
             - ./:/app/
         ports:
-            - "3005:3005"
+            - "3002:3002"
+        command: "npm test"

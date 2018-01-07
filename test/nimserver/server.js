@@ -102,7 +102,7 @@ describe("Suite of unit tests for nim-server", function() {
     });
 
     describe("This is second test of socket returns from server:", function() {
-        
+
         it("2. Returns from server", function(done) {
             console.timeEnd("t1-t2");
             console.time("test2");
