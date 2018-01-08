@@ -22,7 +22,7 @@
     "kill": "taskkill /f /im node.exe",
     "report-codecov": "nyc report --reporter=lcov > coverage.lcov && codecov",
     "start-all": "npm run start-db && npm run start-nim-server",
-    "test-docker": "STILL NOT WORKING!",
+    "test-docker": "docker-compose -f docker-compose-test.yml run node8.9.4 npm test",
     "test-docker1": "docker-compose -f docker-compose-test.yml run node8-alpine npm test",
     "test-docker2": "docker-compose -f docker-compose-test.yml run node8.9 npm test",
     "test-lint": "npm run test-eslint && npm run test-stylelint",

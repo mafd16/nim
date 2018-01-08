@@ -71,7 +71,7 @@ To install the game, you should clone this repository. Then run
 npm install
 ```
 For the game to run, you need to have [Docker](https://www.docker.com/)
-installed. Then you can start the game with
+installed and running. Then you can start the game with
 ```
 npm start
 ```
@@ -104,13 +104,13 @@ This installation will work without making any settings. But if you want to,
 then these are the possibilities.
 
 The server listen on port 3001. To change it, set the environment variable
-DBWEBB_PORT
+DBWEBB_PORT.
+
 The client is running on port 3000. This can be changed with the variable
-DBWEBB_PORT_CLI
+DBWEBB_PORT_CLI.
 
 The database is reached at mongodb://localhost:27017/nimgame. This can be
-changed by setting the variable
-DBWEBB_DSN
+changed by setting the variable DBWEBB_DSN.
 
 
 ### Testing
@@ -132,4 +132,60 @@ You can run my tests locally with the command
 npm test
 ```
 You can then find the code coverage by starting a web-server, e.g. Apache, and
-visiting build/coverage/index.html. 
+visiting build/coverage/index.html.
+
+If you want to run the tests in docker, you can do so with these commands
+```
+npm run test-docker
+npm run test-docker1
+npm run test-docker2
+```
+They run the tests in node8.9.4, node8-alpine and node8.9 respectively. The reason I couldn´t test in node6 is that it complains on async functions. Node9 I just couldn´t
+get to work.
+
+
+### Continuous integration
+
+For continuous integration I have choosen [Scrutinizer](https://scrutinizer-ci.com/g/mafd16/nim/?branch=master). I prefer
+this service because it have three services in one. It builds, reports code
+quality and code coverage. It also gives me hints on what I can do better in my
+code. I definitely think this kind of service is a good way to progress as a
+programmer.
+
+I am overall happy with the grades that the service is giving me. Although I
+think that sometimes the complexity of the code should be taken in to
+consideration. Perhaps there is no good way to improve the code, and the code
+is as good as it can get, but the CI-service still downgrades the code as not
+so good. But that might be asking for too much.  
+
+
+### Real time
+
+The real time in the nim game is that when a player makes a move, then the move
+is instantly transferred to the other player. The game plan is updated
+instantly. Also, the buttons used for taking matches from the heaps are enabled
+and disabled in real time. This makes it impossible for the players to circumvent
+the rules.
+
+The tools for this to work is websockets, and the npm package ws. It has been
+fun to work with websockets, but also sometimes difficult. I had an idea of
+presenting a list with all the games, and making it possible to choose which
+game to join. However, I did not managed to do that. Overall I think this
+technique has worked really well.
+
+
+### Database
+
+For the database I choose the [MongoDB](https://www.mongodb.com/). This is a
+no-SQL database, and we have used it earlier in the course. It has worked really
+well, once I got it up and running. It wasn´t straightforward setting it up
+in a docker container. For the nim game, the MongoDB delivers all that is needed
+out of the box. It would be interesting to use it on some more complex project.
+I think I will definitely use it more in the future.
+
+For the traditional relational databases I am sure I am going to use them quite
+a lot also. Of course, it depends on what projects I will work on, and if my
+future work will be on existing projects or new projects.
+
+
+### My own module on npm

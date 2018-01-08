@@ -1,7 +1,7 @@
 #
 # Image for running test suite.
 #
-FROM node:8
+FROM node:8.9.4
 
 RUN mkdir -p /app
 WORKDIR /app

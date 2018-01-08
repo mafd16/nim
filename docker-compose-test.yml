@@ -1,10 +1,10 @@
 version: "2"
 services:
-    node8:
-        container_name: "nim_test0"
+    node8.9.4:
+        container_name: "nim_test"
         build:
             context: .
-            dockerfile: docker/Dockerfile-node8
+            dockerfile: docker/Dockerfile-node894
         environment:
             - NODE_ENV=production
         volumes:
