@@ -1,7 +1,7 @@
 # nim
 
 
-[![Build Status](https://travis-ci.org/mafd16/nim.svg)](https://travis-ci.org/mafd16/nim)
+
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mafd16/nim/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mafd16/nim/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/mafd16/nim/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/mafd16/nim/?branch=master)
 [![Build Status](https://scrutinizer-ci.com/g/mafd16/nim/badges/build.png?b=master)](https://scrutinizer-ci.com/g/mafd16/nim/build-status/master)
@@ -104,15 +104,32 @@ This installation will work without making any settings. But if you want to,
 then these are the possibilities.
 
 The server listen on port 3001. To change it, set the environment variable
-```
 DBWEBB_PORT
-```
 The client is running on port 3000. This can be changed with the variable
-```
 DBWEBB_PORT_CLI
-```
+
 The database is reached at mongodb://localhost:27017/nimgame. This can be
 changed by setting the variable
-```
 DBWEBB_DSN
+
+
+### Testing
+
+For the tests I am using Mocha and Istanbul (nyc). I am also using eslint and
+stylelint. The unit-tests are only covering the nim-server. For the nim-server
+the code coverage is up to almost 61% if counting lines. Also, the npm package nim-core have code coverage of 100%.
+
+These tools have been quite good, but there have been som real problems testing
+async code. I had to struggle quite a bit. And we could be having an diskussion
+whether they are unit tests or integration tests.
+
+For the client, all my javascript is enclosed in an self invoked function.
+This is, as I found out, practicly impossible to unit-test. I could not find an
+easy way round this at the moment.
+
+You can run my tests locally with the command
 ```
+npm test
+```
+You can then find the code coverage by starting a web-server, e.g. Apache, and
+visiting build/coverage/index.html. 
