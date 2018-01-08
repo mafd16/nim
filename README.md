@@ -67,9 +67,9 @@ me to learn in the future.
 ### Installation
 
 To install the game, you should clone this repository. Then run
-```
-npm install
-```
+
+    npm install
+
 For the game to run, you need to have [Docker](https://www.docker.com/)
 installed and running. Then you can start the game with
 ```
@@ -189,3 +189,11 @@ future work will be on existing projects or new projects.
 
 
 ### My own module on npm
+
+For this game, I am using the npm package [nim-core](https://www.npmjs.com/package/nim-core). This is a package that I have created. It is basically a class called Nim, that is the game. When players
+start a new game, then a new instance of this class is created. The class
+contains the number of piles, the number of matches per pile, function for adding
+player two, function for changing player, function for removing matches, and so on.
+
+Npm as a package manager is easy to use, working well and is good for the open
+source community. I think we will see more services like this in the future.
