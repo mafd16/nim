@@ -118,9 +118,10 @@ changed by setting the variable DBWEBB_DSN.
 
 ### Testing
 
-For the tests I am using Mocha and Istanbul (nyc). I am also using eslint and
-stylelint. The unit-tests are only covering the nim-server. For the nim-server
-the code coverage is up to almost 61% if counting lines. Also, the npm package nim-core have code coverage of 100%.
+For the tests I am using Mocha and Istanbul (nyc), and supertest. I am also
+using eslint and stylelint. The unit-tests are only covering the nim-server. For
+the nim-server the code coverage is up to above 62% if counting lines. Also, the
+npm package nim-core have code coverage of 100%.
 
 These tools have been quite good, but there have been som real problems testing
 async code. I had to struggle quite a bit. And we could be having an diskussion

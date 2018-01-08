@@ -8,6 +8,7 @@
 process.env.DBWEBB_PORT = 3002;
 
 var assert = require("assert");
+var request = require("supertest");
 var nimserver = require("../../src/nimserver/server");
 let websocket;
 let websocket2;
@@ -180,4 +181,14 @@ describe("Suite of unit tests for nim-server", function() {
         });
     });
     // -------- THIS ABOVE WORKS FINE! ---------- //
+
+    describe('GET routes', function() {
+        //this.timeout(15000);
+        it('/ respond with 200', function(done) {
+            request(nimserver)
+                .get('/')
+                .expect('Content-Type', /json/)
+                .expect(200, done);
+        });
+    });
 });
