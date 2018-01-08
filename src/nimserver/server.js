@@ -74,20 +74,14 @@ function handleProtocols(protocols /*, request */) {
  * @return {void}
  */
 async function saveResults(data) {
-    // Parse the data
     var parsedData = JSON.parse(data);
 
-    // The game info
     var winnerName = parsedData.winnerName,
         loserName = parsedData.loserName,
         starting  = parsedData.starting;
 
-    // MongoDB
     var mongo = require("mongodb").MongoClient;
-    //var mongo2 = require("mongodb");
 
-    // The dsn
-    //var dsn =  process.env.DBWEBB_DSN || "mongodb://mongodb_nim:27017/nimgame";
     var dsn =  process.env.DBWEBB_DSN || "mongodb://localhost:27017/nimgame";
 
     try {
@@ -95,9 +89,8 @@ async function saveResults(data) {
         const db = dbcon.db('nimgame');
         const col = await db.collection("games");
 
-        // Insert match result
         await col.insertOne({winner: winnerName, loser: loserName, starting: starting });
-        // Insert top- and bottomlist statistics
+
         const col2 = await db.collection("toplist");
 
         await col2.updateOne(
@@ -112,27 +105,20 @@ async function saveResults(data) {
         );
 
         await dbcon.close();
-
-        //res.render('crud', { title: 'Databas', message: result });
     } catch (err) {
         console.log(err);
-        //res.render('crud', { title: 'Databas', data: err });
     }
 }
 
 
-// Setup for websocket requests.
-// Docs: https://github.com/websockets/ws/blob/master/doc/ws.md
 wss.on("connection", (ws/*, req*/) => {
     console.log("Connection received. Adding client.");
 
-    // Saving the players connection to the players array
     if (players[players.length-1].length == 0) {
         players[players.length-1][0] = ws;
     } else if (players[players.length-1].length == 1) {
         players[players.length-1][1] = ws;
     }
-
 
     console.log("  ");
     console.log(players);
@@ -149,22 +135,13 @@ wss.on("connection", (ws/*, req*/) => {
 
         switch (msg.type) {
             case "startgame":
-                //if (players[players.length-1] == 0) {
                 if (players[players.length-1].length == 1) {
                     var index = games.push(new Nim({nameOfPlayerOne: msg.nickname}))-1;
 
-                    //players[players.length-1] = 1;
-                    //players[players.length-1][0] = 1;
-                    // Saving the players connection
-                    //players[players.length-1][userId] = ws;
                     message = "Game started. Waiting for other player to join";
                     var type = "gameinit";
                 } else {
                     index = games.length - 1;
-                    //players[players.length-1] = 2;
-                    //players[players.length-1][0] = 2;
-                    // Saving the players connection
-                    //players[players.length-1][userId] = ws;
                     games[index].addPlayerTwo(msg.nickname);
                     message = `Player ${msg.nickname} joined.`;
                     type = "gameOn";
@@ -188,10 +165,6 @@ wss.on("connection", (ws/*, req*/) => {
                 };
                 var answer = JSON.stringify(obj);
 
-                //console.log("  ");
-                //console.log("players[" + index + "]: " + players[index]);
-                //console.log("  ");
-
                 for (var i = 0; i < players[index].length; i++) {
                     var toUserWebSocket = players[index][i];
 
@@ -200,8 +173,6 @@ wss.on("connection", (ws/*, req*/) => {
                     }
                 }
 
-                //console.log("players[index].length: " + players[index].length);
-                //console.log(" ");
                 console.log(" ");
                 console.log("Answer sent from server: ");
                 console.log(answer);
@@ -217,7 +188,6 @@ wss.on("connection", (ws/*, req*/) => {
 
                 console.log("Removed matches: " + removed);
 
-                //var type;
                 var newMessage;
                 var winner;
                 var loser;
@@ -246,9 +216,8 @@ wss.on("connection", (ws/*, req*/) => {
                     saveResults(toDatabase);
                 } else {
                     // Change player in turn
-                    //var activePlayerMessage = games[index].changePlayer();
                     games[index].changePlayer();
-                    newMessage = msg.message;// + " " + activePlayerMessage;
+                    newMessage = msg.message;
                     type = "playing";
                 }
 
@@ -322,12 +291,10 @@ wss.on("connection", (ws/*, req*/) => {
 
     ws.on("close", (code, reason) => {
         console.log(`Closing connection: ${code} ${reason}`);
-        //broadcastExcept(ws, `Client disconnected (${wss.clients.size}).`);
     });
 });
 
 // For checking connection alive
-//const interval = setInterval(function ping() {
 setInterval(function ping() {
     wss.clients.forEach(function each(ws) {
         if (ws.isAlive === false) {
@@ -344,7 +311,6 @@ setInterval(function ping() {
 // Startup server
 server.listen(port, () => {
     console.log(`Server is listening on ${port}`);
-    //server.close(function() { console.log('Doh :('); });
 });
 
 
