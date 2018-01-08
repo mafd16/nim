@@ -1,7 +1,9 @@
 language: node_js
 
 node_js:
+    - "node"
     - "8"
+    - "7"
 
 sudo: false
 
@@ -9,10 +11,10 @@ git:
     submodules: false
 
 before_script:
-    - npm install
+    - make install
 
 script:
-    - npm test
+    - make test
 
 after_success:
     - npm run report-codecov
