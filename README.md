@@ -66,10 +66,15 @@ me to learn in the future.
 
 ### Installation
 
-To install the game, you should clone this repository. Then run
-
-    npm install
-
+To install the game, you should clone this repository. Run
+```
+git clone https://github.com/mafd16/nim.git
+```
+Then run
+```
+cd nim
+npm install
+```
 For the game to run, you need to have [Docker](https://www.docker.com/)
 installed and running. Then you can start the game with
 ```
@@ -101,14 +106,12 @@ npm run stop-docker
 ```
 
 This installation will work without making any settings. But if you want to,
-then these are the possibilities.
+then these are the possibilities. (Does not apply when running npm run start-docker).
 
 The server listen on port 3001. To change it, set the environment variable
 DBWEBB_PORT.
-
 The client is running on port 3000. This can be changed with the variable
 DBWEBB_PORT_CLI.
-
 The database is reached at mongodb://localhost:27017/nimgame. This can be
 changed by setting the variable DBWEBB_DSN.
 
@@ -127,7 +130,7 @@ For the client, all my javascript is enclosed in an self invoked function.
 This is, as I found out, practicly impossible to unit-test. I could not find an
 easy way round this at the moment.
 
-You can run my tests locally with the command
+The local tests is using port 3002. You can run my tests locally with the command
 ```
 npm test
 ```

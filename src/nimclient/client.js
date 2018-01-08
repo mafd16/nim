@@ -1,3 +1,5 @@
+/** global: WebSocket */
+
 /**
  * To setup a websocket connection, and nothing more.
  */
