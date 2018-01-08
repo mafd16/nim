@@ -78,8 +78,8 @@
 
         // Good!
         websocket.onopen = function() {
-            console.log("The websocket is now open using '" + websocket.protocol + "'.");
-            console.log(websocket);
+            //console.log("The websocket is now open using '" + websocket.protocol + "'.");
+            //console.log(websocket);
             websocket.send(JSON.stringify({
                 nickname: nickname.value,
                 type: "startgame"
@@ -89,9 +89,9 @@
 
         // Good!
         websocket.onmessage = function(event) {
-            console.log("Receiving message: " + event.data);
-            console.log(event);
-            console.log(websocket);
+            //console.log("Receiving message: " + event.data);
+            //console.log(event);
+            //console.log(websocket);
             let msg = JSON.parse(event.data);
             var disabled;
 
@@ -263,12 +263,12 @@
                     break;
 
                 default:
-                    console.log("This should never happen!");
+                    //console.log("This should never happen!");
             }
         };
         websocket.onclose = function() {
-            console.log("The websocket is now closed.");
-            console.log(websocket);
+            //console.log("The websocket is now closed.");
+            //console.log(websocket);
             output.innerHTML = "Du har nu lämnat spelet.";
             output.innerHTML += "<br>";
         };
@@ -279,7 +279,7 @@
      * What to do when user clicks Close connection.
      */
     close.addEventListener("click", function(/*event*/) {
-        console.log("Closing websocket.");
+        //console.log("Closing websocket.");
         websocket.send(JSON.stringify({
             index: game,
             nickname: nickname.value,
@@ -287,6 +287,6 @@
             type: "info"
         }));
         websocket.close();
-        console.log(websocket);
+        //console.log(websocket);
     });
 })();
