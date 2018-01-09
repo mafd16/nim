@@ -7,7 +7,6 @@
 const port = process.env.DBWEBB_PORT || 3001;
 const express = require("express");
 const http = require("http");
-//const url = require("url");
 const WebSocket = require("ws");
 
 const app = express();
@@ -19,14 +18,12 @@ const wss = new WebSocket.Server({
 });
 
 // require the nim-core
-//const Nim = require("../nim/Nim");
 const Nim = require("nim-core");
 
 
 // This contains the games
 var games = [];
-// This is number of players per game
-//var players = [0];
+
 // This is array with [numOfPlayersPerGame, userOneID: webSocket, userTwoID: webSocket]
 var players = [[]];
 
@@ -34,7 +31,6 @@ var players = [[]];
 function heartbeat() {
     this.isAlive = true;
 }
-
 
 
 // Answer on all http requests
@@ -120,10 +116,6 @@ wss.on("connection", (ws/*, req*/) => {
         players[players.length-1][1] = ws;
     }
 
-    console.log("  ");
-    console.log(players);
-    console.log("  ");
-
     // For checking connection alive
     ws.isAlive = true;
     ws.on("pong", heartbeat);
@@ -148,10 +140,6 @@ wss.on("connection", (ws/*, req*/) => {
                     players.push([]);
                 }
 
-                console.log("  ");
-                console.log("index: " + index);
-                console.log("  ");
-
                 var obj = {
                     index: index,
                     nickname: msg.nickname,
@@ -173,10 +161,6 @@ wss.on("connection", (ws/*, req*/) => {
                     }
                 }
 
-                console.log(" ");
-                console.log("Answer sent from server: ");
-                console.log(answer);
-                console.log(" ");
                 break;
 
             case "playing":
@@ -243,10 +227,6 @@ wss.on("connection", (ws/*, req*/) => {
                     }
                 }
 
-                console.log(" ");
-                console.log("Answer sent from server: ");
-                console.log(answer);
-                console.log(" ");
                 break;
 
             case "info":
@@ -274,11 +254,6 @@ wss.on("connection", (ws/*, req*/) => {
                         toUserWebSocket.send(answer);
                     }
                 }
-
-                console.log(" ");
-                console.log("Answer sent from server: ");
-                console.log(answer);
-                console.log(" ");
 
                 break;
             default:
